@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ArchBoard</title>
+</head>
+<body>
+<header id="top">
+  <div class="brand">ArchBoard<small>Phase 0</small></div>
+  <input id="projName" class="projname" placeholder="プロジェクト名" spellcheck="false">
+  <nav>
+    <button id="btnOpen">フォルダを開く</button>
+    <button id="btnSample">サンプル</button>
+    <button id="btnSave" title="Ctrl+S">保存</button>
+    <button id="btnUpdate" title="Blender で書き出し直したモデルを読み込み、変更点を表示">モデル更新を確認</button>
+    <div class="menu">
+      <button id="btnExport" class="primary">書き出し ▾</button>
+      <div id="exportMenu" class="menu-pop" hidden>
+        <div class="mh">このシート</div>
+        <button data-ex="png:150">合成PNG　A3・150dpi（確認用）</button>
+        <button data-ex="png:300">合成PNG　A3・300dpi（印刷用）</button>
+        <button data-ex="svg:150">SVG（文字・矢印を後から編集可能）</button>
+        <button data-ex="layers:300">Photoshop用：3D画像＋注釈（透過）の2枚</button>
+        <div class="mh">全シート</div>
+        <button data-ex="png:300:all">全シートを合成PNG（300dpi）</button>
+      </div>
+    </div>
+  </nav>
+  <div id="lock" class="lock" hidden></div>
+</header>
+
+<main>
+  <aside id="left">
+    <h3>シート</h3>
+    <ul id="sheetList" class="list"></ul>
+    <button id="addSheet" class="wide">＋ 今の視点でシートを追加</button>
+    <h3>Blender のカメラ <small>クリックでシート作成</small></h3>
+    <ul id="camList" class="list cams"></ul>
+  </aside>
+
+  <section id="stage">
+    <div id="toolbar">
+      <button data-tool="select" title="選択・移動 (V)"><svg viewBox="0 0 20 20"><path d="M5 3l10 6-4.5 1.2L13 15l-2 1-2.4-4.8L5 14z"/></svg><span>選択</span></button>
+      <button data-tool="leader" title="引出線ラベル (L)"><svg viewBox="0 0 20 20"><circle cx="5" cy="15" r="1.8"/><path d="M5 15l6-8h7" fill="none" stroke-width="1.5"/></svg><span>ラベル</span></button>
+      <button data-tool="arrow" title="矢印 (A)"><svg viewBox="0 0 20 20"><path d="M3 15L14 6" fill="none" stroke-width="1.8"/><path d="M17 3l-1.5 7-5.5-5z"/></svg><span>矢印</span></button>
+      <button data-tool="dim" title="寸法 (D)"><svg viewBox="0 0 20 20"><path d="M3 6v9M17 6v9M3 10h14" fill="none" stroke-width="1.4"/><path d="M2 12l2-4M16 12l2-4" fill="none" stroke-width="1.4"/></svg><span>寸法</span></button>
+      <button data-tool="text" title="テキスト (T)"><svg viewBox="0 0 20 20"><path d="M4 4h12v3h-1.5V5.5H10.8V15H13v1.5H7V15h2.2V5.5H5.5V7H4z"/></svg><span>文字</span></button>
+      <span class="sep"></span>
+      <button id="btnUndo" title="元に戻す (Ctrl+Z)"><svg viewBox="0 0 20 20"><path d="M8 5L3 9.5 8 14v-3h4a3.5 3.5 0 0 1 0 7h-2v1.5h2a5 5 0 0 0 0-10H8z"/></svg></button>
+      <button id="btnRedo" title="やり直し (Ctrl+Y)"><svg viewBox="0 0 20 20"><path d="M12 5l5 4.5-5 4.5v-3H8a3.5 3.5 0 0 0 0 7h2v1.5H8a5 5 0 0 1 0-10h4z"/></svg></button>
+    </div>
+    <div id="paper">
+      <canvas id="gl"></canvas>
+      <svg id="ov" viewBox="0 0 420 297" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <div id="hint"></div>
+
+    <div id="empty">
+      <div class="card">
+        <div class="logo">ArchBoard</div>
+        <p class="lead">モデルを「正」にした、編集できる建築プレゼンボード</p>
+        <ul>
+          <li>Blender で書き出したモデルを、形状を変えずにそのまま使います</li>
+          <li>文字・矢印・寸法は部材に固定され、視点を変えても正しい場所を指します</li>
+          <li>モデルを修正したら、どの部材が変わったかを自動で示します</li>
+        </ul>
+        <div class="cta">
+          <button id="emptySample" class="primary">サンプルで試す</button>
+          <button id="emptyOpen">フォルダを開く</button>
+        </div>
+        <p class="muted">Blender アドオンで書き出したフォルダ（model.glb と manifest.json）を、この画面にドラッグしても開けます。</p>
+      </div>
+    </div>
+  </section>
+
+  <aside id="right"><div id="props"></div></aside>
+</main>
+
+<div id="dialog" hidden></div>
+<div id="busy" hidden><div><i></i><span></span></div></div>
+<div id="toast"></div>
+<input type="file" id="fileIn" hidden multiple>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

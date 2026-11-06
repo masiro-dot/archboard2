@@ -1,0 +1,15 @@
+schema_version = "1.0.0"
+
+id = "archboard_exporter"
+version = "0.1.0"
+name = "ArchBoard Exporter"
+tagline = "Export glTF, cameras and geometry hashes for ArchBoard"
+maintainer = "ArchBoard Phase 0"
+type = "add-on"
+
+blender_version_min = "4.2.0"
+
+license = ["SPDX:GPL-3.0-or-later"]
+
+[permissions]
+files = "Write model.glb and manifest.json to the chosen folder"
